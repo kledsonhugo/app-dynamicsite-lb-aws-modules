@@ -1,5 +1,3 @@
-# ORCHESTRATOR
-
 module "network" {
     source           = "./modules/network"
     vpc_cidr         = "30.0.0.0/16"

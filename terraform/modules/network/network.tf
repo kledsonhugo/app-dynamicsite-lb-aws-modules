@@ -1,15 +1,12 @@
-# RESOURCE: VPC
 resource "aws_vpc" "vpc" {
     cidr_block           = var.vpc_cidr
     enable_dns_hostnames = true
 }
 
-# RESOURCE: INTERNET GATEWAY
 resource "aws_internet_gateway" "igw" {
     vpc_id = aws_vpc.vpc.id
 }
 
-# RESOURCE: SUBNETS
 resource "aws_subnet" "sn_pub_az1a" {
     vpc_id                  = aws_vpc.vpc.id
     availability_zone       = "us-east-1a"
@@ -24,7 +21,6 @@ resource "aws_subnet" "sn_pub_az1b" {
     map_public_ip_on_launch = true
 }
 
-# RESOURCE: ROUTE TABLES FOR THE SUBNETS
 resource "aws_route_table" "rt_pub" {
     vpc_id = aws_vpc.vpc.id
     route {
@@ -33,7 +29,6 @@ resource "aws_route_table" "rt_pub" {
     }
 }
 
-# RESOURCE: ROUTE TABLES ASSOCIATION TO SUBNETS
 resource "aws_route_table_association" "rt_pub_sn_pub_az1a" {
   subnet_id      = aws_subnet.sn_pub_az1a.id
   route_table_id = aws_route_table.rt_pub.id

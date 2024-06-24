@@ -1,4 +1,3 @@
-# RESOURCE: SECURITY GROUP
 resource "aws_security_group" "vpc_sg_pub" {
     vpc_id = var.vpc_id
     egress {
@@ -27,7 +26,6 @@ resource "aws_security_group" "vpc_sg_pub" {
     }
 }
 
-# RESOURCE: EC2
 data "template_file" "user_data" {
     template = "${file("./modules/compute/scripts/user_data.sh")}"
 }
@@ -38,7 +36,6 @@ resource "aws_instance" "instance-a" {
     subnet_id              = var.subnet_az1a_id
     vpc_security_group_ids = [aws_security_group.vpc_sg_pub.id]
     user_data              = "${base64encode(data.template_file.user_data.rendered)}"
-    key_name               = "vockey"
     tags = {
         Name = "instance-a"
     }
@@ -50,13 +47,11 @@ resource "aws_instance" "instance-b" {
     subnet_id              = var.subnet_az1b_id
     vpc_security_group_ids = [aws_security_group.vpc_sg_pub.id]
     user_data              = "${base64encode(data.template_file.user_data.rendered)}"
-    key_name               = "vockey"
     tags = {
         Name = "instance-b"
     }
 }
 
-# RESOURCE: LOAD BALANCER TARGET GROUP
 resource "aws_lb_target_group" "ec2_lb_tg" {
     name     = "ec2-lb-tg"
     protocol = "HTTP"
@@ -76,7 +71,6 @@ resource "aws_lb_target_group_attachment" "ec2_lb_tg-instance_b" {
     port             = 80
 }
 
-# RESOURCE: LOAD BALANCER
 resource "aws_lb" "ec2_lb" {
     name               = "ec2-lb"
     load_balancer_type = "application"
