@@ -13,3 +13,5 @@ module "compute" {
     subnet_az1a_id = "${module.network.subnet_az1a_id}"
     subnet_az1b_id = "${module.network.subnet_az1b_id}"
 }
+
+"Falo meu patrão"
